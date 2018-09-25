@@ -71,13 +71,13 @@
 #line 30 "re_grammar.y" /* yacc.c:339  */
 
 
-#include <yara/integers.h>
-#include <yara/utils.h>
-#include <yara/error.h>
-#include <yara/limits.h>
-#include <yara/mem.h>
-#include <yara/re.h>
-#include <yara/re_lexer.h>
+#include <yara_integers.h>
+#include <yara_utils.h>
+#include <yara_error.h>
+#include <yara_limits.h>
+#include <yara_mem.h>
+#include <yara_re.h>
+#include <yara_re_lexer.h>
 
 
 #define YYERROR_VERBOSE

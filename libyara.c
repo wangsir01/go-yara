@@ -35,12 +35,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include <ctype.h>
 
-#include <yara/globals.h>
-#include <yara/error.h>
-#include <yara/re.h>
-#include <yara/modules.h>
-#include <yara/mem.h>
-#include <yara/threading.h>
+#include <yara_globals.h>
+#include <yara_error.h>
+#include <yara_re.h>
+#include <yara_modules.h>
+#include <yara_mem.h>
+#include <yara_threading.h>
 
 #include "crypto.h"
 

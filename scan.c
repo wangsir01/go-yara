@@ -31,15 +31,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <ctype.h>
 
-#include <yara/globals.h>
-#include <yara/limits.h>
-#include <yara/utils.h>
-#include <yara/re.h>
-#include <yara/types.h>
-#include <yara/error.h>
-#include <yara/libyara.h>
-#include <yara/scan.h>
-#include <yara/stopwatch.h>
+#include <yara_globals.h>
+#include <yara_limits.h>
+#include <yara_utils.h>
+#include <yara_re.h>
+#include <yara_types.h>
+#include <yara_error.h>
+#include <yara_libyara.h>
+#include <yara_scan.h>
+#include <yara_stopwatch.h>
 
 
 

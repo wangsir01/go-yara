@@ -30,17 +30,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stddef.h>
 #include <string.h>
 
-#include <yara/ahocorasick.h>
-#include <yara/arena.h>
-#include <yara/re.h>
-#include <yara/error.h>
-#include <yara/exec.h>
-#include <yara/object.h>
-#include <yara/strutils.h>
-#include <yara/utils.h>
-#include <yara/modules.h>
-#include <yara/parser.h>
-#include <yara/mem.h>
+#include <yara_ahocorasick.h>
+#include <yara_arena.h>
+#include <yara_re.h>
+#include <yara_error.h>
+#include <yara_exec.h>
+#include <yara_object.h>
+#include <yara_strutils.h>
+#include <yara_utils.h>
+#include <yara_modules.h>
+#include <yara_parser.h>
+#include <yara_mem.h>
 
 #define todigit(x)  ((x) >='A'&& (x) <='F')? \
                     ((uint8_t) (x - 'A' + 10)) : \
@@ -433,7 +433,7 @@ static int _yr_parser_write_string(
 
 #include <limits.h>
 
-#include <yara/integers.h>
+#include <yara_integers.h>
 
 
 int yr_parser_reduce_string_declaration(

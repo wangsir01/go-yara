@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <time.h>
 
-#include <yara/stopwatch.h>
+#include <yara_stopwatch.h>
 
 #if defined(_WIN32)
 

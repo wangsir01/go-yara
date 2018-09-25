@@ -41,15 +41,15 @@ order to avoid confusion with operating system threads.
 #include <assert.h>
 #include <string.h>
 
-#include <yara/limits.h>
-#include <yara/globals.h>
-#include <yara/utils.h>
-#include <yara/mem.h>
-#include <yara/re.h>
-#include <yara/error.h>
-#include <yara/threading.h>
-#include <yara/re_lexer.h>
-#include <yara/hex_lexer.h>
+#include <yara_limits.h>
+#include <yara_globals.h>
+#include <yara_utils.h>
+#include <yara_mem.h>
+#include <yara_re.h>
+#include <yara_error.h>
+#include <yara_threading.h>
+#include <yara_re_lexer.h>
+#include <yara_hex_lexer.h>
 
 
 #define EMIT_BACKWARDS                  0x01

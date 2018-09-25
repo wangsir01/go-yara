@@ -31,11 +31,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stddef.h>
 #include <string.h>
 
-#include <yara/arena.h>
-#include <yara/ahocorasick.h>
-#include <yara/error.h>
-#include <yara/utils.h>
-#include <yara/mem.h>
+#include <yara_arena.h>
+#include <yara_ahocorasick.h>
+#include <yara_error.h>
+#include <yara_utils.h>
+#include <yara_mem.h>
 
 
 
