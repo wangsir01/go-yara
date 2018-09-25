@@ -74,12 +74,12 @@
 #include <string.h>
 #include <limits.h>
 
-#include <yara/integers.h>
-#include <yara/utils.h>
-#include <yara/hex_lexer.h>
-#include <yara/limits.h>
-#include <yara/mem.h>
-#include <yara/error.h>
+#include <yara_integers.h>
+#include <yara_utils.h>
+#include <yara_hex_lexer.h>
+#include <yara_limits.h>
+#include <yara_mem.h>
+#include <yara_error.h>
 
 
 #define STR_EXPAND(tok) #tok

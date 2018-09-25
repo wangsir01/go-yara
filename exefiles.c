@@ -29,11 +29,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <limits.h>
 
-#include <yara/endian.h>
-#include <yara/pe.h>
-#include <yara/elf.h>
-#include <yara/exec.h>
-#include <yara/utils.h>
+#include <yara_endian.h>
+#include <yara_pe.h>
+#include <yara_elf.h>
+#include <yara_exec.h>
+#include <yara_utils.h>
 
 #ifndef NULL
 #define NULL 0

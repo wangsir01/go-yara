@@ -30,9 +30,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <windows.h>
 
-#include <yara/mem.h>
-#include <yara/error.h>
-#include <yara/proc.h>
+#include <yara_mem.h>
+#include <yara_error.h>
+#include <yara_proc.h>
 
 
 typedef struct _YR_PROC_INFO {

@@ -43,11 +43,11 @@ from files.
 #include <stddef.h>
 
 
-#include <yara/arena.h>
-#include <yara/mem.h>
-#include <yara/error.h>
-#include <yara/limits.h>
-#include <yara/hash.h>
+#include <yara_arena.h>
+#include <yara_mem.h>
+#include <yara_error.h>
+#include <yara_limits.h>
+#include <yara_hash.h>
 
 #pragma pack(push)
 #pragma pack(1)

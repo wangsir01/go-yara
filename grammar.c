@@ -79,17 +79,17 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-#include <yara/integers.h>
-#include <yara/utils.h>
-#include <yara/strutils.h>
-#include <yara/compiler.h>
-#include <yara/object.h>
-#include <yara/sizedstr.h>
-#include <yara/exec.h>
-#include <yara/error.h>
-#include <yara/mem.h>
-#include <yara/lexer.h>
-#include <yara/parser.h>
+#include <yara_integers.h>
+#include <yara_utils.h>
+#include <yara_strutils.h>
+#include <yara_compiler.h>
+#include <yara_object.h>
+#include <yara_sizedstr.h>
+#include <yara_exec.h>
+#include <yara_error.h>
+#include <yara_mem.h>
+#include <yara_lexer.h>
+#include <yara_parser.h>
 
 #if defined(_MSC_VER)
 #define llabs _abs64

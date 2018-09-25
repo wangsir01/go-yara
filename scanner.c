@@ -27,16 +27,16 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <yara/ahocorasick.h>
-#include <yara/error.h>
-#include <yara/exec.h>
-#include <yara/exefiles.h>
-#include <yara/mem.h>
-#include <yara/object.h>
-#include <yara/proc.h>
-#include <yara/scanner.h>
-#include <yara/types.h>
-#include <yara/libyara.h>
+#include <yara_ahocorasick.h>
+#include <yara_error.h>
+#include <yara_exec.h>
+#include <yara_exefiles.h>
+#include <yara_mem.h>
+#include <yara_object.h>
+#include <yara_proc.h>
+#include <yara_scanner.h>
+#include <yara_types.h>
+#include <yara_libyara.h>
 
 #include "exception.h"
 

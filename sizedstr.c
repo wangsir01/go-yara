@@ -28,8 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include <string.h>
-#include <yara/mem.h>
-#include <yara/sizedstr.h>
+#include <yara_mem.h>
+#include <yara_sizedstr.h>
 
 
 int sized_string_cmp(

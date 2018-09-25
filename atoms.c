@@ -81,12 +81,12 @@ will end up using the "Look" atom alone, but in /a(bcd|efg)h/ atoms "bcd" and
 #include <assert.h>
 #include <string.h>
 
-#include <yara/utils.h>
-#include <yara/atoms.h>
-#include <yara/limits.h>
-#include <yara/mem.h>
-#include <yara/error.h>
-#include <yara/types.h>
+#include <yara_utils.h>
+#include <yara_atoms.h>
+#include <yara_limits.h>
+#include <yara_mem.h>
+#include <yara_error.h>
+#include <yara_types.h>
 
 
 #define append_current_leaf_to_node(node) \

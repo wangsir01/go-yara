@@ -33,9 +33,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <mach/vm_region.h>
 #include <mach/vm_statistics.h>
 
-#include <yara/mem.h>
-#include <yara/proc.h>
-#include <yara/error.h>
+#include <yara_mem.h>
+#include <yara_proc.h>
+#include <yara_error.h>
 
 
 typedef struct _YR_PROC_INFO {

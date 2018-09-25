@@ -30,11 +30,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 #include <string.h>
 
-#include <yara/utils.h>
-#include <yara/integers.h>
-#include <yara/hash.h>
-#include <yara/mem.h>
-#include <yara/error.h>
+#include <yara_utils.h>
+#include <yara_integers.h>
+#include <yara_hash.h>
+#include <yara_mem.h>
+#include <yara_error.h>
 
 // Constant-time left rotate that does not invoke undefined behavior.
 // http://blog.regehr.org/archives/1063

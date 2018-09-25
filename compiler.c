@@ -41,15 +41,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <unistd.h>
 #endif
 
-#include <yara/libyara.h>
-#include <yara/utils.h>
-#include <yara/compiler.h>
-#include <yara/exec.h>
-#include <yara/error.h>
-#include <yara/mem.h>
-#include <yara/object.h>
-#include <yara/lexer.h>
-#include <yara/strutils.h>
+#include <yara_libyara.h>
+#include <yara_utils.h>
+#include <yara_compiler.h>
+#include <yara_exec.h>
+#include <yara_error.h>
+#include <yara_mem.h>
+#include <yara_object.h>
+#include <yara_lexer.h>
+#include <yara_strutils.h>
 
 
 static void _yr_compiler_default_include_free(

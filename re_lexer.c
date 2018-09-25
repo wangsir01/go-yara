@@ -533,15 +533,15 @@ with noyywrap then we can remove this pragma.
 #include <assert.h>
 #include <setjmp.h>
 
-#include <yara/globals.h>
-#include <yara/utils.h>
-#include <yara/error.h>
-#include <yara/limits.h>
-#include <yara/mem.h>
-#include <yara/re.h>
-#include <yara/re_lexer.h>
-#include <yara/threading.h>
-#include <yara/strutils.h>
+#include <yara_globals.h>
+#include <yara_utils.h>
+#include <yara_error.h>
+#include <yara_limits.h>
+#include <yara_mem.h>
+#include <yara_re.h>
+#include <yara_re_lexer.h>
+#include <yara_threading.h>
+#include <yara_strutils.h>
 
 
 #ifdef _WIN32

@@ -739,13 +739,13 @@ with noyywrap then we can remove this pragma.
 #define strtoll _strtoi64
 #endif
 
-#include <yara/integers.h>
-#include <yara/lexer.h>
-#include <yara/sizedstr.h>
-#include <yara/error.h>
-#include <yara/mem.h>
-#include <yara/utils.h>
-#include <yara/strutils.h>
+#include <yara_integers.h>
+#include <yara_lexer.h>
+#include <yara_sizedstr.h>
+#include <yara_error.h>
+#include <yara_mem.h>
+#include <yara_utils.h>
+#include <yara_strutils.h>
 
 #include "grammar.h"
 
