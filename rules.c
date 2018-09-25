@@ -31,15 +31,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <ctype.h>
 
-#include <yara/error.h>
-#include <yara/filemap.h>
-#include <yara/mem.h>
-#include <yara/proc.h>
-#include <yara/rules.h>
-#include <yara/utils.h>
-#include <yara/globals.h>
-#include <yara/scan.h>
-#include <yara/scanner.h>
+#include <yara_error.h>
+#include <yara_filemap.h>
+#include <yara_mem.h>
+#include <yara_proc.h>
+#include <yara_rules.h>
+#include <yara_utils.h>
+#include <yara_globals.h>
+#include <yara_scan.h>
+#include <yara_scanner.h>
 
 
 YR_API int yr_rules_define_integer_variable(

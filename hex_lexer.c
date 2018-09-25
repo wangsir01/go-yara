@@ -730,14 +730,14 @@ with noyywrap then we can remove this pragma.
 
 #include <setjmp.h>
 
-#include <yara/globals.h>
-#include <yara/limits.h>
-#include <yara/error.h>
-#include <yara/mem.h>
-#include <yara/re.h>
-#include <yara/threading.h>
-#include <yara/strutils.h>
-#include <yara/hex_lexer.h>
+#include <yara_globals.h>
+#include <yara_limits.h>
+#include <yara_error.h>
+#include <yara_mem.h>
+#include <yara_re.h>
+#include <yara_threading.h>
+#include <yara_strutils.h>
+#include <yara_hex_lexer.h>
 
 #include "hex_grammar.h"
 

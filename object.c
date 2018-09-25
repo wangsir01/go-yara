@@ -36,12 +36,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <math.h>
 
-#include <yara/globals.h>
-#include <yara/mem.h>
-#include <yara/error.h>
-#include <yara/object.h>
-#include <yara/exec.h>
-#include <yara/utils.h>
+#include <yara_globals.h>
+#include <yara_mem.h>
+#include <yara_error.h>
+#include <yara_object.h>
+#include <yara_exec.h>
+#include <yara_utils.h>
 
 
 int yr_object_create(

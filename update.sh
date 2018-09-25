@@ -18,14 +18,17 @@ echo Copying files to golag tree.
 cp yara_src/libyara/*.c .
 cp yara_src/libyara/*.h .
 cp yara_src/libyara/include/yara.h .
-cp -r yara_src/libyara/include/yara/ .
-cp -r yara_src/libyara/modules/ .
-cp -r yara_src/libyara/modules/tests* .
-cp -r yara_src/libyara/modules/pe* .
-cp -r yara_src/libyara/modules/elf* .
-cp -r yara_src/libyara/modules/math* .
-cp -r yara_src/libyara/modules/time* .
+for i in yara_src/libyara/include/yara/*.h; do
+    cp $i yara_`basename $i`
+done
+
+for i in yara_src/libyara/modules/{test,pe,elf,math,time,module_list}*; do
+    cp $i modules_`basename $i`
+done
 
 cp yara_src/libyara/proc/linux.c proc_linux.c
 cp yara_src/libyara/proc/windows.c proc_windows.c
 cp yara_src/libyara/proc/mach.c proc_darwin.c
+
+sed -i 's/yara\//yara_/g' *.h *.c
+sed -i 's/modules\//modules_/g' *.h *.c

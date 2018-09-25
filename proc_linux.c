@@ -42,9 +42,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _XOPEN_SOURCE 500
 #endif
 
-#include <yara/error.h>
-#include <yara/proc.h>
-#include <yara/mem.h>
+#include <yara_error.h>
+#include <yara_proc.h>
+#include <yara_mem.h>
 
 
 typedef struct _YR_PROC_INFO {

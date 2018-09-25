@@ -27,9 +27,9 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <yara/exec.h>
-#include <yara/modules.h>
-#include <yara/libyara.h>
+#include <yara_exec.h>
+#include <yara_modules.h>
+#include <yara_libyara.h>
 
 
 #define MODULE(name) \
@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     int name ## __finalize(YR_MODULE* module);
 
 
-#include <modules/module_list>
+#include <modules_module_list>
 
 #undef MODULE
 
@@ -60,7 +60,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 YR_MODULE yr_modules_table[] =
 {
-  #include <modules/module_list>
+  #include <modules_module_list>
 };
 
 #undef MODULE

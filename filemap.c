@@ -37,8 +37,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <unistd.h>
 #endif
 
-#include <yara/filemap.h>
-#include <yara/error.h>
+#include <yara_filemap.h>
+#include <yara_error.h>
 
 
 //

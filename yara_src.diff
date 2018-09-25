@@ -1,3 +1,29 @@
+diff --git a/libyara/include/yara/limits.h b/libyara/include/yara/limits.h
+index 8df3cc2..b122067 100644
+--- a/libyara/include/yara/limits.h
++++ b/libyara/include/yara/limits.h
+@@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include <windows.h>
+ #endif
+ 
+-#include "utils.h"
++#include "yara/utils.h"
+ 
+ // Maximum lenght of file paths. This is the only limit that doesn't have the
+ // YR_ prefix. The intention is using the default MAX_PATH if defined.
+diff --git a/libyara/include/yara/parser.h b/libyara/include/yara/parser.h
+index abfa986..b04dd54 100644
+--- a/libyara/include/yara/parser.h
++++ b/libyara/include/yara/parser.h
+@@ -31,7 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #define YR_PARSER_H
+ 
+ 
+-#include "lexer.h"
++#include "yara/lexer.h"
+ 
+ 
+ int yr_parser_emit(
 diff --git a/libyara/modules/math.c b/libyara/modules/math.c
 index 759112e..eca8d35 100644
 --- a/libyara/modules/math.c

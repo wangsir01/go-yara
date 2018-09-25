@@ -27,9 +27,9 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <yara/error.h>
-#include <yara/proc.h>
-#include <yara/mem.h>
+#include <yara_error.h>
+#include <yara_proc.h>
+#include <yara_mem.h>
 
 int _yr_process_attach(int, YR_PROC_ITERATOR_CTX*);
 int _yr_process_detach(YR_PROC_ITERATOR_CTX*);

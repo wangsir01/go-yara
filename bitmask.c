@@ -29,8 +29,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <assert.h>
 
-#include <yara/utils.h>
-#include <yara/bitmask.h>
+#include <yara_utils.h>
+#include <yara_bitmask.h>
 
 //
 // yr_bitmask_find_non_colliding_offset
