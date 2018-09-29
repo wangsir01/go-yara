@@ -6,13 +6,7 @@
 
 package yara
 
-// #cgo !no_pkg_config,!yara_static  pkg-config: yara
-// #cgo !no_pkg_config,yara_static   pkg-config: --static yara
-// #cgo no_pkg_config                LDFLAGS:    -lyara
-/*
-#include <yara.h>
-#if YR_MAJOR_VERSION != 3
-#error YARA version 3 required
-#endif
-*/
+// #cgo CFLAGS: -D_FILE_OFFSET_BITS=64
+// #cgo LDFLAGS:
+
 import "C"
