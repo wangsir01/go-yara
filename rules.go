@@ -44,7 +44,6 @@ type MatchRule struct {
 // A MatchString represents a string declared and matched in a rule.
 type MatchString struct {
 	Name   string
-	Base   uint64
 	Offset uint64
 	Data   []byte
 }
@@ -79,7 +78,8 @@ func (r *Rules) ScanMemWithCallback(buf []byte, flags ScanFlags, timeout time.Du
 	if len(buf) > 0 {
 		ptr = (*C.uint8_t)(unsafe.Pointer(&(buf[0])))
 	}
-	cbc := makeScanCallbackContainer(cb)
+	cbc := &scanCallbackContainer{ScanCallback: cb}
+	defer cbc.destroy()
 	id := callbackData.Put(cbc)
 	defer callbackData.Delete(id)
 	err = newError(C.yr_rules_scan_mem(
@@ -90,7 +90,7 @@ func (r *Rules) ScanMemWithCallback(buf []byte, flags ScanFlags, timeout time.Du
 		C.YR_CALLBACK_FUNC(C.scanCallbackFunc),
 		id,
 		C.int(timeout/time.Second)))
-	runtime.KeepAlive(r)
+	keepAlive(r)
 	return
 }
 
@@ -109,7 +109,9 @@ func (r *Rules) ScanFile(filename string, flags ScanFlags, timeout time.Duration
 func (r *Rules) ScanFileWithCallback(filename string, flags ScanFlags, timeout time.Duration, cb ScanCallback) (err error) {
 	cfilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cfilename))
-	id := callbackData.Put(makeScanCallbackContainer(cb))
+	cbc := &scanCallbackContainer{ScanCallback: cb}
+	defer cbc.destroy()
+	id := callbackData.Put(cbc)
 	defer callbackData.Delete(id)
 	err = newError(C.yr_rules_scan_file(
 		r.cptr,
@@ -118,7 +120,7 @@ func (r *Rules) ScanFileWithCallback(filename string, flags ScanFlags, timeout t
 		C.YR_CALLBACK_FUNC(C.scanCallbackFunc),
 		id,
 		C.int(timeout/time.Second)))
-	runtime.KeepAlive(r)
+	keepAlive(r)
 	return
 }
 
@@ -135,7 +137,9 @@ func (r *Rules) ScanProc(pid int, flags ScanFlags, timeout time.Duration) (match
 // every event emitted by libyara, the appropriate method on the
 // ScanCallback object is called.
 func (r *Rules) ScanProcWithCallback(pid int, flags ScanFlags, timeout time.Duration, cb ScanCallback) (err error) {
-	id := callbackData.Put(makeScanCallbackContainer(cb))
+	cbc := &scanCallbackContainer{ScanCallback: cb}
+	defer cbc.destroy()
+	id := callbackData.Put(cbc)
 	defer callbackData.Delete(id)
 	err = newError(C.yr_rules_scan_proc(
 		r.cptr,
@@ -144,7 +148,7 @@ func (r *Rules) ScanProcWithCallback(pid int, flags ScanFlags, timeout time.Dura
 		C.YR_CALLBACK_FUNC(C.scanCallbackFunc),
 		id,
 		C.int(timeout/time.Second)))
-	runtime.KeepAlive(r)
+	keepAlive(r)
 	return
 }
 
@@ -153,7 +157,7 @@ func (r *Rules) Save(filename string) (err error) {
 	cfilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cfilename))
 	err = newError(C.yr_rules_save(r.cptr, cfilename))
-	runtime.KeepAlive(r)
+	keepAlive(r)
 	return
 }
 
@@ -214,20 +218,15 @@ func (r *Rules) DefineVariable(identifier string, value interface{}) (err error)
 	default:
 		err = errors.New("wrong value type passed to DefineVariable; bool, int64, float64, string are accepted")
 	}
-	runtime.KeepAlive(r)
+	keepAlive(r)
 	return
 }
 
 // GetRules returns a slice of rule objects that are part of the
-// ruleset.
+// ruleset
 func (r *Rules) GetRules() (rv []Rule) {
-	// Equivalent to:
-	// #define yr_rules_foreach(rules, rule) \
-	//     for (rule = rules->rules_list_head; !RULE_IS_NULL(rule); rule++)
-	// #define RULE_IS_NULL(x) \
-	//     (((x)->g_flags) & RULE_GFLAGS_NULL)
-	for p := r.cptr.rules_list_head; p.g_flags&C.RULE_GFLAGS_NULL == 0; p = (*C.YR_RULE)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + unsafe.Sizeof(*p))) {
-		rv = append(rv, Rule{p})
+	for p := unsafe.Pointer(r.cptr.rules_list_head); (*C.YR_RULE)(p).g_flags&C.RULE_GFLAGS_NULL == 0; p = unsafe.Pointer(uintptr(p) + unsafe.Sizeof(*r.cptr.rules_list_head)) {
+		rv = append(rv, Rule{(*C.YR_RULE)(p)})
 	}
 	return
 }

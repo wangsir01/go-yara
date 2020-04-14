@@ -12,7 +12,6 @@ package yara
 import "C"
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 )
 
@@ -57,34 +56,23 @@ type ScanCallbackModuleImportFinished interface {
 	ModuleImported(*Object) (bool, error)
 }
 
-// scanCallbackContainer is used by to pass a ScanCallback (and
-// associated data) between ScanXxx methods and scanCallbackFunc(). It
-// stores the public callback interface and a list of malloc()'d C
-// pointers.
+// scanCallbackContainer is used by (*Rules).Scan* methods and
+// scanCallbackFunc(). It stores the public callback interface and a
+// list of C pointers that need to be freed later.
 type scanCallbackContainer struct {
 	ScanCallback
 	cdata []unsafe.Pointer
 }
 
-// makeScanCallbackContainer sets up a scanCallbackContainer with a
-// finalizer method that that frees any stored C pointers when the
-// container is garbage-collected.
-func makeScanCallbackContainer(sc ScanCallback) *scanCallbackContainer {
-	c := &scanCallbackContainer{ScanCallback: sc, cdata: nil}
-	runtime.SetFinalizer(c, (*scanCallbackContainer).finalize)
-	return c
-}
-
 // addCPointer adds a C pointer that can later be freed using free().
 func (c *scanCallbackContainer) addCPointer(p unsafe.Pointer) { c.cdata = append(c.cdata, p) }
 
-// finalize frees stored C pointers
-func (c *scanCallbackContainer) finalize() {
+// destroy frees stored C pointers
+func (c *scanCallbackContainer) destroy() {
 	for _, p := range c.cdata {
 		C.free(p)
 	}
 	c.cdata = nil
-	runtime.SetFinalizer(c, nil)
 }
 
 //export scanCallbackFunc

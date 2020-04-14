@@ -20,7 +20,7 @@ static const char* rule_namespace(YR_RULE* r) {
 }
 
 // rule_tags returns pointers to the tag names associated with a rule,
-// using YARA's own implementation.
+// using YARA's own implementation
 static void rule_tags(YR_RULE* r, const char *tags[], int *n) {
 	const char *tag;
 	int i = 0;
@@ -34,7 +34,7 @@ static void rule_tags(YR_RULE* r, const char *tags[], int *n) {
 }
 
 // rule_tags returns pointers to the meta variables associated with a
-// rule, using YARA's own implementation.
+// rule, using YARA's own implementation
 static void rule_metas(YR_RULE* r, const YR_META *metas[], int *n) {
 	const YR_META *meta;
 	int i = 0;
@@ -48,8 +48,7 @@ static void rule_metas(YR_RULE* r, const YR_META *metas[], int *n) {
 }
 
 // meta_get is an accessor function for unions that are not directly
-// accessible from Go because CGO does not understand the union types
-// generated using the DECLARE_REFERENCE macro.
+// accessible from Go because CGO does not understand them.
 static void meta_get(YR_META *m, const char** identifier, char** string) {
 	*identifier = m->identifier;
 	*string = m->string;
@@ -57,7 +56,7 @@ static void meta_get(YR_META *m, const char** identifier, char** string) {
 }
 
 // rule_strings returns pointers to the matching strings associated
-// with a rule, using YARA's macro-based implementation.
+// with a rule, using YARA's own implementation.
 static void rule_strings(YR_RULE* r, const YR_STRING *strings[], int *n) {
 	const YR_STRING *string;
 	int i = 0;
@@ -75,8 +74,7 @@ static const char* string_identifier(YR_STRING* s) {
 	return s->identifier;
 }
 
-// string_matches returns pointers to the string match objects
-// associated with a string, using YARA's macro-based implementation.
+// string_matches
 static void string_matches(YR_STRING* s, const YR_MATCH *matches[], int *n) {
 	const YR_MATCH *match;
 	int i = 0;
@@ -92,7 +90,7 @@ static void string_matches(YR_STRING* s, const YR_MATCH *matches[], int *n) {
 */
 import "C"
 
-// Rule represents a single rule as part of a ruleset.
+// Rule represents a single rule as part of a ruleset
 type Rule struct{ cptr *C.YR_RULE }
 
 // Identifier returns the rule's name.
@@ -185,20 +183,20 @@ func (r *Rule) Metas() (metas map[string]interface{}) {
 	return
 }
 
-// IsPrivate returns true if the rule is marked as private.
+// IsPrivate returns true if the rule is marked as private
 func (r *Rule) IsPrivate() bool {
 	return (r.cptr.g_flags & C.RULE_GFLAGS_PRIVATE) != 0
 }
 
-// IsGlobal returns true if the rule is marked as global.
+// IsGlobal returns true if the rule is marked as global
 func (r *Rule) IsGlobal() bool {
 	return (r.cptr.g_flags & C.RULE_GFLAGS_GLOBAL) != 0
 }
 
-// String represents a string as part of a rule.
+// String represents a string as part of a rule
 type String struct{ cptr *C.YR_STRING }
 
-// Strings returns the rule's strings.
+// Strings returns the rule's strings
 func (r *Rule) Strings() (strs []String) {
 	var size C.int
 	C.rule_strings(r.cptr, nil, &size)
@@ -213,12 +211,12 @@ func (r *Rule) Strings() (strs []String) {
 	return
 }
 
-// Identifier returns the string's name.
+// Identifier returns the string's name
 func (s *String) Identifier() string {
 	return C.GoString(C.string_identifier(s.cptr))
 }
 
-// Match represents a string match.
+// Match represents a string match
 type Match struct{ cptr *C.YR_MATCH }
 
 // Matches returns all matches that have been recorded for the string.
@@ -236,13 +234,7 @@ func (s *String) Matches() (matches []Match) {
 	return
 }
 
-// Base returns the base offset of the memory block in which the
-// string match occurred.
-func (m *Match) Base() int64 {
-	return int64(m.cptr.base)
-}
-
-// Offset returns the offset at which the string match occurred.
+// Offset returns the offset at which the string match occurred
 func (m *Match) Offset() int64 {
 	return int64(m.cptr.offset)
 }
@@ -252,7 +244,6 @@ func (r *Rule) getMatchStrings() (matchstrings []MatchString) {
 		for _, m := range s.Matches() {
 			matchstrings = append(matchstrings, MatchString{
 				Name:   s.Identifier(),
-				Base:   uint64(m.Base()),
 				Offset: uint64(m.Offset()),
 				Data:   m.Data(),
 			})
