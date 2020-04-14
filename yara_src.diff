@@ -5,10 +5,10 @@ index 8feffcdb..8f639614 100644
 @@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  #include <windows.h>
  #endif
- 
+
 -#include "utils.h"
 +#include "yara/utils.h"
- 
+
  // Maximum length of file paths. This is the only limit that doesn't have the
  // YR_ prefix. The intention is using the default MAX_PATH if defined.
 diff --git a/libyara/include/yara/parser.h b/libyara/include/yara/parser.h
@@ -17,21 +17,21 @@ index 77f710a1..a67dea72 100644
 +++ b/libyara/include/yara/parser.h
 @@ -31,7 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  #define YR_PARSER_H
- 
- 
+
+
 -#include "lexer.h"
 +#include "yara/lexer.h"
- 
- 
+
+
  int yr_parser_emit(
-diff --git a/libyara/modules/math/math.c b/libyara/modules/math/math.c
+diff --git a/libyara/modules/math.c b/libyara/modules/math.c
 index 3037c556..ad97abac 100644
---- a/libyara/modules/math/math.c
-+++ b/libyara/modules/math/math.c
+--- a/libyara/modules/math.c
++++ b/libyara/modules/math.c
 @@ -39,13 +39,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  // log2 is not defined by math.h in VC++
- 
+
 -#if defined(_MSC_VER) && _MSC_VER < 1800
 -static double log2(double n)
 -{
@@ -54,17 +54,17 @@ index 3037c556..ad97abac 100644
  }
 -#endif
 -
- 
+
  define_function(string_entropy)
  {
-diff --git a/libyara/modules/pe/pe.c b/libyara/modules/pe/pe.c
+diff --git a/libyara/modules/pe.c b/libyara/modules/pe.c
 index d8b18df5..e041aa5e 100644
---- a/libyara/modules/pe/pe.c
-+++ b/libyara/modules/pe/pe.c
+--- a/libyara/modules/pe.c
++++ b/libyara/modules/pe.c
 @@ -31,7 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  #include <ctype.h>
  #include <time.h>
- 
+
 -#include "../crypto.h"
 +#include "crypto.h"
  #if defined(HAVE_LIBCRYPTO)
@@ -77,13 +77,13 @@ index 5f6a6f2b..9b95f72a 100644
 @@ -27,7 +27,6 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 -#if defined(USE_LINUX_PROC)
- 
+
  #include <fcntl.h>
  #include <inttypes.h>
 @@ -173,5 +172,3 @@ YR_API YR_MEMORY_BLOCK* yr_process_get_first_memory_block(
- 
+
    return yr_process_get_next_memory_block(iterator);
  }
 -
@@ -95,13 +95,13 @@ index 8ab6c527..be86abde 100644
 @@ -27,7 +27,6 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 -#if defined(USE_MACH_PROC)
- 
+
  #include <mach/mach.h>
  #include <mach/mach_vm.h>
 @@ -168,5 +167,3 @@ YR_API YR_MEMORY_BLOCK* yr_process_get_first_memory_block(
- 
+
    return yr_process_get_next_memory_block(iterator);
  }
 -
@@ -113,13 +113,13 @@ index c39521da..ceabf0ee 100644
 @@ -27,7 +27,6 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 -#if defined(USE_WINDOWS_PROC)
- 
+
  #include <windows.h>
- 
+
 @@ -187,5 +186,3 @@ YR_API YR_MEMORY_BLOCK* yr_process_get_first_memory_block(
- 
+
    return yr_process_get_next_memory_block(iterator);
  }
 -

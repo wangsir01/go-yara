@@ -44,7 +44,7 @@ typedef struct _YR_STOPWATCH
 
 } YR_STOPWATCH;
 
-#elif defined(__APPLE__) && defined(__MACH__)
+#elif defined(__MACH__)
 
 #include <mach/mach_time.h>
 
@@ -75,9 +75,9 @@ typedef struct _YR_STOPWATCH
 void yr_stopwatch_start(
     YR_STOPWATCH* stopwatch);
 
-// yr_stopwatch_elapsed_ns returns the number of nanoseconds elapsed
+// yr_stopwatch_elapsed_us returns the number of microseconds elapsed
 // since the last call to yr_stopwatch_start.
-uint64_t yr_stopwatch_elapsed_ns(
+uint64_t yr_stopwatch_elapsed_us(
     YR_STOPWATCH* stopwatch);
 
 #endif

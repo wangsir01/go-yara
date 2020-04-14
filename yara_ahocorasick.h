@@ -52,7 +52,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 int yr_ac_automaton_create(
-    YR_ARENA* arena,
     YR_AC_AUTOMATON** automaton);
 
 
@@ -63,14 +62,15 @@ int yr_ac_automaton_destroy(
 int yr_ac_add_string(
     YR_AC_AUTOMATON* automaton,
     YR_STRING* string,
-    uint32_t string_idx,
     YR_ATOM_LIST_ITEM* atom,
-    YR_ARENA* arena);
+    YR_ARENA* matches_arena);
 
 
 int yr_ac_compile(
     YR_AC_AUTOMATON* automaton,
-    YR_ARENA* arena);
+    YR_ARENA* arena,
+    YR_AC_TABLES* tables);
+
 
 void yr_ac_print_automaton(
     YR_AC_AUTOMATON* automaton);

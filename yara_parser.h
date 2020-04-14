@@ -37,39 +37,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int yr_parser_emit(
     yyscan_t yyscanner,
     uint8_t instruction,
-    YR_ARENA_REF* instruction_ref);
+    uint8_t** instruction_address);
 
 
 int yr_parser_emit_with_arg(
     yyscan_t yyscanner,
     uint8_t instruction,
     int64_t argument,
-    YR_ARENA_REF* instruction_ref,
-    YR_ARENA_REF* argument_ref);
-
-
-int yr_parser_emit_with_arg_int32(
-    yyscan_t yyscanner,
-    uint8_t instruction,
-    int32_t argument,
-    YR_ARENA_REF* instruction_ref,
-    YR_ARENA_REF* argument_ref);
+    uint8_t** instruction_address,
+    int64_t** argument_address);
 
 
 int yr_parser_emit_with_arg_double(
     yyscan_t yyscanner,
     uint8_t instruction,
     double argument,
-    YR_ARENA_REF* instruction_ref,
-    YR_ARENA_REF* argument_ref);
+    uint8_t** instruction_address,
+    double** argument_address);
 
 
 int yr_parser_emit_with_arg_reloc(
     yyscan_t yyscanner,
     uint8_t instruction,
     void* argument,
-    YR_ARENA_REF* instruction_ref,
-    YR_ARENA_REF* argument_ref);
+    uint8_t** instruction_address,
+    void** argument_address);
 
 
 int yr_parser_check_types(
@@ -86,20 +78,19 @@ int yr_parser_lookup_string(
 
 int yr_parser_lookup_loop_variable(
     yyscan_t yyscanner,
-    const char* identifier,
-    YR_EXPRESSION*);
+    const char* identifier);
 
 
 int yr_parser_reduce_rule_declaration_phase_1(
     yyscan_t yyscanner,
     int32_t flags,
     const char* identifier,
-    YR_ARENA_REF* rule_ref);
+    YR_RULE** rule);
 
 
 int yr_parser_reduce_rule_declaration_phase_2(
     yyscan_t yyscanner,
-    YR_ARENA_REF* rule_ref);
+    YR_RULE* rule);
 
 
 int yr_parser_reduce_string_declaration(
@@ -107,7 +98,7 @@ int yr_parser_reduce_string_declaration(
     YR_MODIFIER modifier,
     const char* identifier,
     SIZED_STRING* str,
-    YR_ARENA_REF* string_ref);
+    YR_STRING** string);
 
 
 int yr_parser_reduce_meta_declaration(
@@ -116,7 +107,7 @@ int yr_parser_reduce_meta_declaration(
     const char* identifier,
     const char* string,
     int64_t integer,
-    YR_ARENA_REF* meta_ref);
+    YR_META** meta);
 
 
 int yr_parser_reduce_string_identifier(
@@ -145,7 +136,7 @@ int yr_parser_reduce_import(
 int yr_parser_reduce_operation(
     yyscan_t yyscanner,
     const char* operation,
-    YR_EXPRESSION left_operand,
-    YR_EXPRESSION right_operand);
+    EXPRESSION left_operand,
+    EXPRESSION right_operand);
 
 #endif

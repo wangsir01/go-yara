@@ -379,7 +379,7 @@ uint64_t yr_get_entry_point_offset(
           buffer_length);
   }
 
-  return YR_UNDEFINED;
+  return UNDEFINED;
 }
 
 
@@ -422,5 +422,5 @@ uint64_t yr_get_entry_point_address(
       break;
   }
 
-  return YR_UNDEFINED;
+  return UNDEFINED;
 }

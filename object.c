@@ -96,7 +96,7 @@ int yr_object_create(
   switch(type)
   {
     case OBJECT_TYPE_INTEGER:
-      obj->value.i = YR_UNDEFINED;
+      obj->value.i = UNDEFINED;
       break;
     case OBJECT_TYPE_FLOAT:
       obj->value.d = NAN;
@@ -314,14 +314,7 @@ int yr_object_from_external_variable(
         break;
     }
 
-    if (result == ERROR_SUCCESS)
-    {
-      *object = obj;
-    }
-    else
-    {
-      yr_object_destroy(obj);
-    }
+    *object = obj;
   }
 
   return result;
@@ -368,7 +361,7 @@ void yr_object_destroy(
 
       if (array_items != NULL)
       {
-        for (i = 0; i < array_items->length; i++)
+        for (i = 0; i < array_items->count; i++)
           if (array_items->objects[i] != NULL)
             yr_object_destroy(array_items->objects[i]);
       }
@@ -601,7 +594,6 @@ int yr_object_copy(
           yr_object_copy(
               object_as_function(object)->return_obj,
               &object_as_function(copy)->return_obj),
-          // cleanup
           yr_object_destroy(copy));
 
       for (i = 0; i < YR_MAX_OVERLOADED_FUNCTIONS; i++)
@@ -622,7 +614,6 @@ int yr_object_copy(
 
         FAIL_ON_ERROR_WITH_CLEANUP(
             yr_object_structure_set_member(copy, o),
-            // cleanup
             yr_free(o);
             yr_object_destroy(copy));
 
@@ -690,21 +681,6 @@ int yr_object_structure_set_member(
 }
 
 
-int yr_object_array_length(
-    YR_OBJECT* object)
-{
-  YR_OBJECT_ARRAY* array;
-
-  assert(object->type == OBJECT_TYPE_ARRAY);
-  array = object_as_array(object);
-
-  if (array->items == NULL)
-    return 0;
-
-  return array->items->length;
-}
-
-
 YR_OBJECT* yr_object_array_get_item(
     YR_OBJECT* object,
     int flags,
@@ -720,8 +696,8 @@ YR_OBJECT* yr_object_array_get_item(
 
   array = object_as_array(object);
 
-  if (array->items != NULL && array->items->capacity > index)
-    result = array->items->objects[index];
+  if (array->items != NULL && array->items->count > index)
+      result = array->items->objects[index];
 
   if (result == NULL && flags & OBJECT_CREATE)
   {
@@ -743,7 +719,7 @@ int yr_object_array_set_item(
   YR_OBJECT_ARRAY* array;
 
   int i;
-  int capacity;
+  int count;
 
   assert(index >= 0);
   assert(object->type == OBJECT_TYPE_ARRAY);
@@ -752,47 +728,43 @@ int yr_object_array_set_item(
 
   if (array->items == NULL)
   {
-    capacity = 64;
+    count = 64;
 
-    while (capacity <= index)
-      capacity *= 2;
+    while (count <= index)
+      count *= 2;
 
     array->items = (YR_ARRAY_ITEMS*) yr_malloc(
-        sizeof(YR_ARRAY_ITEMS) + capacity * sizeof(YR_OBJECT*));
+        sizeof(YR_ARRAY_ITEMS) + count * sizeof(YR_OBJECT*));
 
     if (array->items == NULL)
       return ERROR_INSUFFICIENT_MEMORY;
 
-    memset(array->items->objects, 0, capacity * sizeof(YR_OBJECT*));
+    memset(array->items->objects, 0, count * sizeof(YR_OBJECT*));
 
-    array->items->capacity = capacity;
-    array->items->length = 0;
+    array->items->count = count;
   }
-  else if (index >= array->items->capacity)
+  else if (index >= array->items->count)
   {
-    capacity = array->items->capacity * 2;
+    count = array->items->count * 2;
 
-    while (capacity <= index)
-      capacity *= 2;
+    while (count <= index)
+      count *= 2;
 
     array->items = (YR_ARRAY_ITEMS*) yr_realloc(
         array->items,
-        sizeof(YR_ARRAY_ITEMS) + capacity * sizeof(YR_OBJECT*));
+        sizeof(YR_ARRAY_ITEMS) + count * sizeof(YR_OBJECT*));
 
     if (array->items == NULL)
       return ERROR_INSUFFICIENT_MEMORY;
 
-    for (i = array->items->capacity; i < capacity; i++)
+    for (i = array->items->count; i < count; i++)
       array->items->objects[i] = NULL;
 
-    array->items->capacity = capacity;
+    array->items->count = count;
   }
 
   item->parent = object;
   array->items->objects[index] = item;
-
-  if (index >= array->items->length)
-    array->items->length = index + 1;
 
   return ERROR_SUCCESS;
 }
@@ -816,7 +788,7 @@ YR_OBJECT* yr_object_dict_get_item(
   {
     for (i = 0; i < dict->items->used; i++)
     {
-      if (strcmp(dict->items->objects[i].key->c_string, key) == 0)
+      if (strcmp(dict->items->objects[i].key, key) == 0)
         result = dict->items->objects[i].obj;
     }
   }
@@ -883,7 +855,7 @@ int yr_object_dict_set_item(
 
   item->parent = object;
 
-  dict->items->objects[dict->items->used].key = sized_string_new(key);
+  dict->items->objects[dict->items->used].key = yr_strdup(key);
   dict->items->objects[dict->items->used].obj = item;
 
   dict->items->used++;
@@ -920,7 +892,7 @@ bool yr_object_has_undefined_value(
     case OBJECT_TYPE_STRING:
       return field_obj->value.ss == NULL;
     case OBJECT_TYPE_INTEGER:
-      return field_obj->value.i == YR_UNDEFINED;
+      return field_obj->value.i == UNDEFINED;
   }
 
   return false;
@@ -945,7 +917,7 @@ int64_t yr_object_get_integer(
   va_end(args);
 
   if (integer_obj == NULL)
-    return YR_UNDEFINED;
+    return UNDEFINED;
 
   assertf(integer_obj->type == OBJECT_TYPE_INTEGER,
           "type of \"%s\" is not integer\n", field);
@@ -1148,6 +1120,7 @@ YR_API void yr_object_print_data(
     int print_identifier)
 {
   YR_DICTIONARY_ITEMS* dict_items;
+  YR_ARRAY_ITEMS* array_items;
   YR_STRUCTURE_MEMBER* member;
 
   char indent_spaces[32];
@@ -1164,19 +1137,19 @@ YR_API void yr_object_print_data(
   switch(object->type)
   {
     case OBJECT_TYPE_FLOAT:
-      if (object->value.i != YR_UNDEFINED)
+      if (object->value.d != UNDEFINED)
         printf(" = %f", object->value.d);
       else
-        printf(" = YR_UNDEFINED");
+        printf(" = UNDEFINED");
 
       break;
 
     case OBJECT_TYPE_INTEGER:
 
-      if (object->value.i != YR_UNDEFINED)
+      if (object->value.i != UNDEFINED)
         printf(" = %" PRId64, object->value.i);
       else
-        printf(" = YR_UNDEFINED");
+        printf(" = UNDEFINED");
 
       break;
 
@@ -1201,7 +1174,7 @@ YR_API void yr_object_print_data(
       }
       else
       {
-        printf(" = YR_UNDEFINED");
+        printf(" = UNDEFINED");
       }
 
       break;
@@ -1223,16 +1196,21 @@ YR_API void yr_object_print_data(
       break;
 
     case OBJECT_TYPE_ARRAY:
-      for (i = 0; i < yr_object_array_length(object); i++)
-      {
-        YR_OBJECT* o = yr_object_array_get_item(object, 0, i);
 
-        if (o != NULL)
+      array_items = object_as_array(object)->items;
+
+      if (array_items != NULL)
+      {
+        for (i = 0; i < array_items->count; i++)
         {
-          printf("\n%s\t[%d]", indent_spaces, i);
-          yr_object_print_data(o, indent + 1, 0);
+          if (array_items->objects[i] != NULL)
+          {
+            printf("\n%s\t[%d]", indent_spaces, i);
+            yr_object_print_data(array_items->objects[i], indent + 1, 0);
+          }
         }
       }
+
       break;
 
     case OBJECT_TYPE_DICTIONARY:
@@ -1243,11 +1221,7 @@ YR_API void yr_object_print_data(
       {
         for (i = 0; i < dict_items->used; i++)
         {
-          printf(
-              "\n%s\t%s",
-              indent_spaces,
-              dict_items->objects[i].key->c_string);
-
+          printf("\n%s\t%s", indent_spaces, dict_items->objects[i].key);
           yr_object_print_data(dict_items->objects[i].obj, indent + 1, 0);
         }
       }

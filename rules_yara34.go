@@ -59,9 +59,7 @@ func (r *Rules) ScanFileDescriptor(fd uintptr, flags ScanFlags, timeout time.Dur
 // emitted by libyara, the appropriate method on the ScanCallback
 // object is called.
 func (r *Rules) ScanFileDescriptorWithCallback(fd uintptr, flags ScanFlags, timeout time.Duration, cb ScanCallback) (err error) {
-	cbc := &scanCallbackContainer{ScanCallback: cb}
-	defer cbc.destroy()
-	id := callbackData.Put(cbc)
+	id := callbackData.Put(makeScanCallbackContainer(cb))
 	defer callbackData.Delete(id)
 	err = newError(C._yr_rules_scan_fd(
 		r.cptr,
@@ -70,7 +68,7 @@ func (r *Rules) ScanFileDescriptorWithCallback(fd uintptr, flags ScanFlags, time
 		C.YR_CALLBACK_FUNC(C.scanCallbackFunc),
 		id,
 		C.int(timeout/time.Second)))
-	keepAlive(r)
+	runtime.KeepAlive(r)
 	return
 }
 
@@ -87,11 +85,11 @@ func (r *Rules) Write(wr io.Writer) (err error) {
 		user_data: id,
 	}
 	err = newError(C.yr_rules_save_stream(r.cptr, &stream))
-	keepAlive(r)
+	runtime.KeepAlive(r)
 	return
 }
 
-// ReadRules retrieves a compiled ruleset from an io.Reader
+// ReadRules retrieves a compiled ruleset from an io.Reader.
 func ReadRules(rd io.Reader) (*Rules, error) {
 	r := &Rules{rules: &rules{}}
 	id := callbackData.Put(rd)

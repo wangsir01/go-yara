@@ -36,7 +36,7 @@ import (
 // Scanner contains a YARA scanner (YR_SCANNER). The main difference
 // to Rules (YR_RULES) is that it is possible to set variables in a
 // thread-safe manner (cf.
-// https://github.com/VirusTotal/yara/issues/350)
+// https://github.com/VirusTotal/yara/issues/350).
 type Scanner struct {
 	*scanner
 	// The Scanner struct has to hold a pointer to the rules
@@ -105,7 +105,7 @@ func (s *Scanner) DefineVariable(identifier string, value interface{}) (err erro
 	default:
 		err = errors.New("wrong value type passed to DefineVariable; bool, int64, float64, string are accepted")
 	}
-	keepAlive(s)
+	runtime.KeepAlive(s)
 	return
 }
 
@@ -137,13 +137,13 @@ func (s *Scanner) SetCallback(cb ScanCallback) *Scanner {
 // a pointer. The object must be removed from callbackData by the
 // calling ScanXxxx function.
 func (s *Scanner) putCallbackData(matches *[]MatchRule) unsafe.Pointer {
-	var c scanCallbackContainer
+	var sc ScanCallback
 	if s.cb != nil {
-		c.ScanCallback = s.cb
+		sc = s.cb
 	} else {
-		c.ScanCallback = (*MatchRules)(matches)
+		sc = (*MatchRules)(matches)
 	}
-	ptr := callbackData.Put(&c)
+	ptr := callbackData.Put(makeScanCallbackContainer(sc))
 	C.yr_scanner_set_callback(s.cptr, C.YR_CALLBACK_FUNC(C.scanCallbackFunc), ptr)
 	return ptr
 }
@@ -166,7 +166,7 @@ func (s *Scanner) ScanMem(buf []byte) (matches []MatchRule, err error) {
 		s.cptr,
 		ptr,
 		C.size_t(len(buf))))
-	keepAlive(s)
+	runtime.KeepAlive(s)
 	return
 }
 
@@ -186,7 +186,7 @@ func (s *Scanner) ScanFile(filename string) (matches []MatchRule, err error) {
 		s.cptr,
 		cfilename,
 	))
-	keepAlive(s)
+	runtime.KeepAlive(s)
 	return
 }
 
@@ -203,7 +203,7 @@ func (s *Scanner) ScanFileDescriptor(fd uintptr) (matches []MatchRule, err error
 		s.cptr,
 		C.int(fd),
 	))
-	keepAlive(s)
+	runtime.KeepAlive(s)
 	return
 }
 
@@ -220,6 +220,30 @@ func (s *Scanner) ScanProc(pid int) (matches []MatchRule, err error) {
 		s.cptr,
 		C.int(pid),
 	))
-	keepAlive(s)
+	runtime.KeepAlive(s)
+	return
+}
+
+// GetLastErrorRule returns the Rule which caused the last error
+//
+// The result is nil, if scanner returned no rule
+func (s *Scanner) GetLastErrorRule() (r *Rule) {
+	ptr := C.yr_scanner_last_error_rule(s.cptr)
+	if ptr != nil {
+		r = &Rule{ptr}
+	}
+	runtime.KeepAlive(s)
+	return
+}
+
+// GetLastErrorString returns the String which caused the last error
+//
+// The result is nil, if scanner returned no string
+func (s *Scanner) GetLastErrorString() (r *String) {
+	ptr := C.yr_scanner_last_error_string(s.cptr)
+	if ptr != nil {
+		r = &String{ptr}
+	}
+	runtime.KeepAlive(s)
 	return
 }

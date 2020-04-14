@@ -153,10 +153,6 @@ int yr_object_set_string(
     ...) YR_PRINTF_LIKE(4, 5);
 
 
-int yr_object_array_length(
-    YR_OBJECT* object);
-
-
 YR_OBJECT* yr_object_array_get_item(
     YR_OBJECT* object,
     int flags,
