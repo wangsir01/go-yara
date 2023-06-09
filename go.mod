@@ -1,3 +1,3 @@
-module github.com/Velocidex/go-yara
+module github.com/wangsir01/go-yara
 
 go 1.15
