@@ -40,7 +40,7 @@ typedef MD5_CTX yr_md5_ctx;
 #define yr_md5_init(ctx) \
  MD5Init(ctx)
 #define yr_md5_update(ctx,data,len) \
- MD5Update(ctx,data,len)
+ MD5Update(ctx,(const unsigned char *) data,len)
 #define yr_md5_final(digest,ctx) \
  MD5Final(digest,ctx)
 
@@ -2703,7 +2703,7 @@ define_function(imphash)
       for (i = 0; i < final_name_len; i++)
         final_name[i] = tolower(final_name[i]);
 
-      yr_md5_update(&ctx, final_name, final_name_len);
+      yr_md5_update(&ctx, (const unsigned char *)final_name, final_name_len);
 
       yr_free(final_name);
 
